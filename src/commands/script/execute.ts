@@ -22,7 +22,7 @@ export default class Execute extends BaseCommand {
         const { args, flags } = await this.parse(Execute);
 
         // Dependeincies
-        const client = new LRClient(this.getLoggerConfig(flags["logged-fields"]));
+        const client = new LRClient(this.getLoggerConfig(flags));
 
         await client.init();
 
