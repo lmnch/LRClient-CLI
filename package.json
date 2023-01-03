@@ -1,6 +1,6 @@
 {
   "name": "lrclient-cli",
-  "version": "0.0.2",
+  "version": "0.0.7",
   "description": "CLI wrapper for lrclient (https://github.com/lmnch/lrclient)",
   "author": "lmnch",
   "bin": {
@@ -21,7 +21,7 @@
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^2.1.5",
     "cli-select-2": "^2.0.0",
-    "lrclient": "^0.1.9"
+    "lrclient": "0.1.11"
   },
   "devDependencies": {
     "@oclif/test": "^2.2.4",

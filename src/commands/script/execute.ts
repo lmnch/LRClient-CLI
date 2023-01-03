@@ -3,7 +3,6 @@ import * as vm from "node:vm";
 import * as fs from "fs/promises";
 import BaseCommand from "../BaseCommand";
 import { LRClient, LRCLoggerConfig } from "lrclient";
-import chalk from 'chalk';
 
 export default class Execute extends BaseCommand {
     static description = `Executes a ECMA script by providing LRClient as "lrc" variable in the context of an async method (=> "await" can be used).`

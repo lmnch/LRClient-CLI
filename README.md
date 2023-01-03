@@ -352,7 +352,7 @@ GLOBAL FLAGS
   --loggedFields=(env|endpoint|endpoint_payload|req|req_body|resp|resp_body)...  Specify level for logging.
 ```
 
-_See code: [dist/commands/BaseCommand.ts](https://github.com/lmnch/lrclient-cli/blob/v0.0.1/dist/commands/BaseCommand.ts)_
+_See code: [dist/commands/BaseCommand.ts](https://github.com/lmnch/lrclient-cli/blob/v0.0.7/dist/commands/BaseCommand.ts)_
 
 ## `lrc env get`
 
@@ -895,5 +895,5 @@ EXAMPLES
   ...
 ```
 
-_See code: [dist/commands/send/index.ts](https://github.com/lmnch/lrclient-cli/blob/v0.0.1/dist/commands/send/index.ts)_
+_See code: [dist/commands/send/index.ts](https://github.com/lmnch/lrclient-cli/blob/v0.0.7/dist/commands/send/index.ts)_
 <!-- commandsstop -->
