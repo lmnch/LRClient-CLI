@@ -37,23 +37,25 @@ Type: application/json
         let payloadType = flags.type;
 
         if (!payloadType) {
-            this.log("Which type of payload should be created?")
+            this.log("Payload Type:")
             payloadType = await (await cliSelect({ values: Object.values(PayloadType) })).value;
+            this.log(payloadType);
         }
 
         const newPayload: Payload = await NewPayload.readPayload(payloadType);
 
         await storePayload(args.payload, newPayload);
 
+        this.log();
         LRCLogger.instance.logPayload(newPayload);
     }
 
     static async readPayload(payloadType: string): Promise<Payload> {
         switch (payloadType) {
             case PayloadType.APPLICATION_JSON:
-                return new PayloadJson(await launchEditor(""));
+                return new PayloadJson(await launchEditor("", ".json"));
             case PayloadType.APPLICATION_TEXT:
-                return new PayloadText(await launchEditor(""));
+                return new PayloadText(await launchEditor("", ".txt"));
             case PayloadType.APPLICATION_OCTET_STREAM:
             case PayloadType.APPLICATION_PDF:
                 return new PayloadFile(await CliUx.ux.prompt("Path to file"));

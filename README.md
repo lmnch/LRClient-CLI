@@ -319,6 +319,10 @@ The `LRCLogger` (`src/logging/LRCLogger`) is used to print the model classes to 
 # All commands (generated)
 <!-- commands -->
 * [`lrc BaseCommand`](#lrc-basecommand)
+* [`lrc ee ENDPOINT`](#lrc-ee-endpoint)
+* [`lrc en ENDPOINT`](#lrc-en-endpoint)
+* [`lrc endpoint edit ENDPOINT`](#lrc-endpoint-edit-endpoint)
+* [`lrc endpoint new ENDPOINT`](#lrc-endpoint-new-endpoint)
 * [`lrc env get`](#lrc-env-get)
 * [`lrc env set ENVIRONMENT`](#lrc-env-set-environment)
 * [`lrc help [COMMAND]`](#lrc-help-command)
@@ -352,7 +356,161 @@ GLOBAL FLAGS
   --loggedFields=(env|endpoint|endpoint_payload|req|req_body|resp|resp_body)...  Specify level for logging.
 ```
 
-_See code: [dist/commands/BaseCommand.ts](https://github.com/lmnch/lrclient-cli/blob/v0.0.7/dist/commands/BaseCommand.ts)_
+_See code: [dist/commands/BaseCommand.ts](https://github.com/lmnch/lrclient-cli/blob/v0.0.8/dist/commands/BaseCommand.ts)_
+
+## `lrc ee ENDPOINT`
+
+Updates the endpoint configuration file in the editor set in $EDITOR variable.
+
+```
+USAGE
+  $ lrc ee [ENDPOINT]
+
+ARGUMENTS
+  ENDPOINT  Path to the endpoint definition json file
+
+DESCRIPTION
+  Updates the endpoint configuration file in the editor set in $EDITOR variable.
+
+ALIASES
+  $ lrc ee
+
+EXAMPLES
+  $ lrc ee endpoints/example.json
+  endpoints/test.json
+  * Editor opens *
+   PUT {{url}}/api
+  {
+      "billo": "test"
+  }
+```
+
+## `lrc en ENDPOINT`
+
+Creates a new endpoint definition file.
+
+```
+USAGE
+  $ lrc en [ENDPOINT] [-u <value>] [-m <value>] [-h <value>] [-v <value>] [-p <value>]
+
+ARGUMENTS
+  ENDPOINT  Path to the endpoint definition json file
+
+FLAGS
+  -h, --headers=<value>...        Headers that should be used when calling the endpoint.
+  -m, --method=<value>            HTTP method for the request (GET, POST, PUT, DELETE, PATCH, HEAD, CONNECT, TRACE).
+  -p, --payload=<value>           Path to payload for the endpoint.
+  -u, --url=<value>               URL of the endpoint (Could contain variables).
+  -v, --localVariable=<value>...  Variables for the endpoint.
+
+DESCRIPTION
+  Creates a new endpoint definition file.
+
+ALIASES
+  $ lrc en
+
+EXAMPLES
+  $ lrc en endpoints/example.json
+  URL: {{baseUrl}}/test
+  HTTP Method:
+  POST
+  Create new payload (y/n): n
+  endpoints/example.json
+  POST {{baseUrl}}/test
+  
+
+  $ lrc en endpoints/example.json
+  URL: {{baseUrl}}/api/test
+  HTTP Method:
+  PUT
+  Create new payload (y/n): y
+  Payload Path: payloads/data/test.json
+  Payload Type:
+  application/json
+  Type:  application/json
+  {
+      "billo": "moin"
+  }
+  endpoints/example.json
+   PUT {{baseUrl}}/api/test
+```
+
+## `lrc endpoint edit ENDPOINT`
+
+Updates the endpoint configuration file in the editor set in $EDITOR variable.
+
+```
+USAGE
+  $ lrc endpoint edit [ENDPOINT]
+
+ARGUMENTS
+  ENDPOINT  Path to the endpoint definition json file
+
+DESCRIPTION
+  Updates the endpoint configuration file in the editor set in $EDITOR variable.
+
+ALIASES
+  $ lrc ee
+
+EXAMPLES
+  $ lrc endpoint edit endpoints/example.json
+  endpoints/test.json
+  * Editor opens *
+   PUT {{url}}/api
+  {
+      "billo": "test"
+  }
+```
+
+## `lrc endpoint new ENDPOINT`
+
+Creates a new endpoint definition file.
+
+```
+USAGE
+  $ lrc endpoint new [ENDPOINT] [-u <value>] [-m <value>] [-h <value>] [-v <value>] [-p <value>]
+
+ARGUMENTS
+  ENDPOINT  Path to the endpoint definition json file
+
+FLAGS
+  -h, --headers=<value>...        Headers that should be used when calling the endpoint.
+  -m, --method=<value>            HTTP method for the request (GET, POST, PUT, DELETE, PATCH, HEAD, CONNECT, TRACE).
+  -p, --payload=<value>           Path to payload for the endpoint.
+  -u, --url=<value>               URL of the endpoint (Could contain variables).
+  -v, --localVariable=<value>...  Variables for the endpoint.
+
+DESCRIPTION
+  Creates a new endpoint definition file.
+
+ALIASES
+  $ lrc en
+
+EXAMPLES
+  $ lrc endpoint new endpoints/example.json
+  URL: {{baseUrl}}/test
+  HTTP Method:
+  POST
+  Create new payload (y/n): n
+  endpoints/example.json
+  POST {{baseUrl}}/test
+  
+
+  $ lrc endpoint new endpoints/example.json
+  URL: {{baseUrl}}/api/test
+  HTTP Method:
+  PUT
+  Create new payload (y/n): y
+  Payload Path: payloads/data/test.json
+  Payload Type:
+  application/json
+  Type:  application/json
+  {
+      "billo": "moin"
+  }
+  endpoints/example.json
+   PUT {{baseUrl}}/api/test
+```
 
 ## `lrc env get`
 
@@ -426,7 +584,7 @@ DESCRIPTION
   Display help for lrc.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.19/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.22/src/commands/help.ts)_
 
 ## `lrc payload edit PAYLOAD`
 
@@ -533,7 +691,7 @@ EXAMPLES
   $ lrc plugins
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v2.1.7/src/commands/plugins/index.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v2.1.12/src/commands/plugins/index.ts)_
 
 ## `lrc plugins:install PLUGIN...`
 
@@ -895,5 +1053,5 @@ EXAMPLES
   ...
 ```
 
-_See code: [dist/commands/send/index.ts](https://github.com/lmnch/lrclient-cli/blob/v0.0.7/dist/commands/send/index.ts)_
+_See code: [dist/commands/send/index.ts](https://github.com/lmnch/lrclient-cli/blob/v0.0.8/dist/commands/send/index.ts)_
 <!-- commandsstop -->

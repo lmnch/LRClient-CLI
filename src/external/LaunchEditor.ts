@@ -1,6 +1,8 @@
 
 import * as fs from 'fs/promises';
 import { ChildProcess } from 'child_process';
+import { fileURLToPath } from 'url';
+import { sep } from 'path';
 const child_process = require('child_process');
 
 
@@ -13,24 +15,40 @@ export class NoEditorSetError extends Error {
     }
 }
 
-export async function launchEditor(data: string): Promise<string> {
+export async function launchEditor(data: string, extension: string = ""): Promise<string> {
     if (!editor) {
         throw new NoEditorSetError();
     }
     return new Promise((res: (arg0: string) => void, rej) => {
-        fs.writeFile(".tmp", data).then(_ => {
-            const child = child_process.spawn(editor, [".tmp"], {
-                stdio: 'inherit'
-            });
-            child.on('exit', (e: Error, code: any) => {
-                if (e) {
-                    rej(e);
-                }
-                fs.readFile(".tmp").then((edited: Buffer) => {
-                    fs.rm(".tmp");
+        const filename = ".tmp"+ extension;
+        fs.writeFile(filename, data).then(_ => {
+            editFile(filename).then(_ => {
+                fs.readFile(filename).then((edited: Buffer) => {
+                    fs.rm(filename);
                     res(edited.toString());
                 });
-            });
+            }).catch(e => rej(e));
+        });
+    })
+}
+
+export async function editFile(filePath: string): Promise<void> {
+    return new Promise(async (res: () => void, rej) => {
+        const pathParts = filePath.split(sep);
+
+        if (pathParts.length > 1) {
+            // Try to create missing directories
+            await fs.mkdir(pathParts.slice(0, pathParts.length - 1).join(sep), { recursive: true });
+        }
+
+        const child = child_process.spawn(editor, [filePath], {
+            stdio: 'inherit'
+        });
+        child.on('exit', (e: Error, code: any) => {
+            if (e) {
+                rej(e);
+            }
+            res();
         });
     })
 }
