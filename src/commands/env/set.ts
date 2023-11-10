@@ -1,10 +1,9 @@
-import * as fs from 'fs';
-import { Command } from '@oclif/core'
-import { ConfigManager, loadEnvironment, LRCLogger } from 'lrclient';
-
+import * as fs from "fs";
+import { Command } from "@oclif/core";
+import { ConfigManager, loadEnvironment, LRCLogger } from "lrclient";
 
 export default class SetEnvironment extends Command {
-  static description = 'Updates the current working environment'
+  static description = "Updates the current working environment";
 
   static examples = [
     `<%= config.bin %> <%= command.id %> ./env/test.json
@@ -20,11 +19,17 @@ repository=LRClient
 requestUrl={{baseUrl}}/{{user}}/{{repository}}
 Updated config ⚙️
 `,
-  ]
+  ];
 
-  static flags = {}
+  static flags = {};
 
-  static args = [{ name: "environment", description: "Path to the environment json file", required: true }]
+  static args = [
+    {
+      name: "environment",
+      description: "Path to the environment json file",
+      required: true,
+    },
+  ];
 
   static logger = new LRCLogger();
   static configManager = new ConfigManager();
@@ -41,11 +46,9 @@ Updated config ⚙️
 
     if (config.selectedEnvironment) {
       const env = await loadEnvironment(config.selectedEnvironment);
-      SetEnvironment.logger.logEnvironment(config.selectedEnvironment, env)
+      SetEnvironment.logger.logEnvironment(config.selectedEnvironment, env);
     }
-    
 
     this.log("Updated config ⚙️");
   }
-
 }

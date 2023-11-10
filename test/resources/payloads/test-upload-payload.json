@@ -1,4 +1,4 @@
 {
-    "payloadType": "application/json",
-    "data": "{\"test\":[{\"entry1\":137},42,\"{{value3}}\"]}"
+  "payloadType": "application/json",
+  "data": "{\"test\":[{\"entry1\":137},42,\"{{value3}}\"]}"
 }

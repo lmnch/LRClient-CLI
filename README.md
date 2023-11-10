@@ -1,15 +1,15 @@
-LRestClient
-=================
+# LRestClient
 
 Command-line, json-based REST-Client written in Typescript.
 
-* [Usage](#usage)
-* [Definitions](#definitions)
-* [Commands](#commands)
-* [Project Structure](#project-structure)
-* [All commands (generated)](#all-commands-generated)
+- [Usage](#usage)
+- [Definitions](#definitions)
+- [Commands](#commands)
+- [Project Structure](#project-structure)
+- [All commands (generated)](#all-commands-generated)
 
 # Usage
+
 ```sh-session
 $ npm install -g lrclient
 $ lrc COMMAND
@@ -25,17 +25,22 @@ User-Agent: Mozilla Firefox
 # Definitions
 
 ## Variables
+
 Variables can be used to parameterize your requests.
 The value of a variable can be references like this:
+
 ```
 {{variablename}}
 ```
+
 The value of a variable can be defined on different levels which overwrite each other in the following order (lower index overwrites higher index):
+
 1. Local variables: These are variables that are passed directly at the call and might be used e.g. for dynamic values which are returned by another request
 2. Endpoint variables: Defined at the endpoint which should be called
-3. Environment variables: Defined for the currently selected environment 
+3. Environment variables: Defined for the currently selected environment
 
 Variable values can contain other variables (but please do not create circular dependencies):
+
 ```json
 {
   "variables": {
@@ -45,14 +50,18 @@ Variable values can contain other variables (but please do not create circular d
   }
 }
 ```
+
 (the variable `authorization` will be resolved to `bernd:bernd!rocks`)
 
 ## Headers
+
 There's a similar hierarchy like for variables:
+
 1. Endpoint headers
 2. Environment headers
 
 Variables can be used inside of the value of a header:
+
 ```json
 {
   "headers": {
@@ -67,20 +76,25 @@ Variables can be used inside of the value of a header:
 ```
 
 ## Payloads
+
 A payload can be used by creating a json file of this form:
+
 ```json
 {
-    "payloadType": "application/json",
-    "data": "{\"street\":\"Teststreet\",\"name\": \"{{user}}\"}"
+  "payloadType": "application/json",
+  "data": "{\"street\":\"Teststreet\",\"name\": \"{{user}}\"}"
 }
 ```
+
 Inside of this data field, variables can be resolved.
 Currently, there are three types of payloads supported:
-* JSON: `data` contains the whole JSON string
-* Text: `data` contains the whole text
-* Files: `data` contains the path to the file that should be uploaded
+
+- JSON: `data` contains the whole JSON string
+- Text: `data` contains the whole text
+- Files: `data` contains the path to the file that should be uploaded
 
 The payload which should be used for a request can be defined on two levels (similar to variables):
+
 1. "Locally": Directly at the call via parameter
 2. Endpoint: Default payload for the endpoint
 
@@ -110,7 +124,6 @@ It is also possible to overwrite/supplement the headers and variables defined in
 
 The endpoint file that should be used can be selected by its path when using the [send command](#lrc-send-endpoint).
 
-
 ## Environments
 
 The LRClient can be configured by using different environments.
@@ -131,15 +144,16 @@ An environment contains headers and custom variables which are applied to all re
   }
 }
 ```
+
 Currently, the environment has to be defined directly in a JSON file.
 But, one can switch between different files with the [`lrc env set`](#lrc-env-set) command.
 
 # Commands
 
-* [`lrc env set`](#lrc-env-set)
-* [`lrc env get`](#lrc-env-set)
-* [`lrc send ENDPOINT`](#lrc-send-endpoint)
-* [`lrc script execute SCRIPTFILE`](#lrc-script-execute-scriptfile)
+- [`lrc env set`](#lrc-env-set)
+- [`lrc env get`](#lrc-env-set)
+- [`lrc send ENDPOINT`](#lrc-send-endpoint)
+- [`lrc script execute SCRIPTFILE`](#lrc-script-execute-scriptfile)
 
 ## `lrc env set`
 
@@ -206,6 +220,7 @@ User-Agent: Mozilla Firefox
 ```
 
 ## `lrc payload new PAYLOAD`
+
 Creates a new payload definition file at `./PAYLOAD`.
 It is possble to choose the the payload type upfront.
 Then, the editor defined in the `$EDITOR` environment variable is launched to enter the data for the payload.
@@ -226,6 +241,7 @@ Type: application/json
 ```
 
 ## `lrc payload edit PAYLOAD`
+
 Edits the data of the payload definition file at `./PAYLOAD`.
 The editor defined in the `$EDITOR` environment variable is launched to enter the data for the payload.
 
@@ -251,12 +267,19 @@ Furthermore, the await keyword can be used to wait for the result of `lrc.send`.
 let password = "test";
 
 // Creates a new user
-const createdUser = await lrc.send("./endpoints/create-new-user.json", { name: "lukas", password: password });
+const createdUser = await lrc.send("./endpoints/create-new-user.json", {
+  name: "lukas",
+  password: password,
+});
 
 // Update the user's password 10 times
-for(let i = 0; i < 10; i++){
+for (let i = 0; i < 10; i++) {
   let newPassword = password;
-  await lrc.send("./endpoints/update-password.json", {name: "lukas", oldPassword: password, newPassword: newPassword});
+  await lrc.send("./endpoints/update-password.json", {
+    name: "lukas",
+    oldPassword: password,
+    newPassword: newPassword,
+  });
   password = newPassword;
 }
 ```
@@ -266,37 +289,45 @@ for(let i = 0; i < 10; i++){
 Internally, the imported script is wrapped in a async function with `lrc` and `log` as parameters.
 These values are passed to the context of the execution.
 So internally, the example from before results in the following snippet:
-```javascript
-const executionLrcMethod = async (lrc) => { 
 
+```javascript
+const executionLrcMethod = async (lrc) => {
   let password = "test";
 
   // Creates a new user
-  const createdUser = await lrc.send("./endpoints/create-new-user.json", { name: "lukas", password: password });
+  const createdUser = await lrc.send("./endpoints/create-new-user.json", {
+    name: "lukas",
+    password: password,
+  });
 
   // Update the user's password 10 times
-  for(let i = 0; i < 10; i++){
+  for (let i = 0; i < 10; i++) {
     let newPassword = password;
-    await lrc.send("./endpoints/update-password.json", {name: "lukas", oldPassword: password, newPassword: newPassword});
+    await lrc.send("./endpoints/update-password.json", {
+      name: "lukas",
+      oldPassword: password,
+      newPassword: newPassword,
+    });
     password = newPassword;
   }
-
 };
 executionLrcMethod(lrc, log);
 ```
-This allows the usage of the `await` keyword in the script files. 
+
+This allows the usage of the `await` keyword in the script files.
 
 # Logging
 
 For all the request sending commands ([`lrc send ENDPOINT`](#lrc-send-endpoint) and [`lrc script execute SCRIPTFILE`](#lrc-script-execute-scriptfile)), the default logging behaviour can be overwritten by using the `loggedFields` flag (or the alias `-l`).
 Multiple values can be passed using this flag:
-* `env`: Logs the current environment before executing the request (this contains headers and variables)
-* `endpoint`: Logs the endpoint definition which was selected (contains basic information like url but also variables and headers)
-* `endpoint_payload`: Logs the payload which is linked in the endpoint
-* `req`: Logs the resulting request after variable resolution
-* `req_body`: Logs the resulting body after variable replacement
-* `resp`: Logs information about the response like status code
-* `resp_body`: Logs the extracted body of the response
+
+- `env`: Logs the current environment before executing the request (this contains headers and variables)
+- `endpoint`: Logs the endpoint definition which was selected (contains basic information like url but also variables and headers)
+- `endpoint_payload`: Logs the payload which is linked in the endpoint
+- `req`: Logs the resulting request after variable resolution
+- `req_body`: Logs the resulting body after variable replacement
+- `resp`: Logs information about the response like status code
+- `resp_body`: Logs the extracted body of the response
 
 The [`lrc send ENDPOINT`](#lrc-send-endpoint) command uses per default the logging flags `req`, `req_body`, `resp`, and `resp_body`.
 The [`lrc script execute SCRIPTFILE`](#lrc-script-execute-scriptfile)) command (logging flags apply to all requests made by the script) logs per default nothing.
@@ -309,7 +340,7 @@ The source files for the commands are stored in `src/commands`.
 The commands call the configuration and REST client functionality by using the classes in the `src/boundary` directory.
 
 It contains the `LRClient` which performs the REST calls and the `ConfigManager` which allows to load and change the configuration.
-`src/model` contains the data classes that define how the requests are performed. 
+`src/model` contains the data classes that define how the requests are performed.
 This contains some enums (`HttpMethod`, `PayloadType`) and classes that contain the definition (`Environment`, `Endpoint`).
 Further, theres a special directory `payload` for different payload types.
 They use classes from the `src/variables` directory which manage the variables and variable replacement.
@@ -317,31 +348,33 @@ They use classes from the `src/variables` directory which manage the variables a
 The `LRCLogger` (`src/logging/LRCLogger`) is used to print the model classes to the console in a colorful way.
 
 # All commands (generated)
+
 <!-- commands -->
-* [`lrc BaseCommand`](#lrc-basecommand)
-* [`lrc ee ENDPOINT`](#lrc-ee-endpoint)
-* [`lrc en ENDPOINT`](#lrc-en-endpoint)
-* [`lrc endpoint edit ENDPOINT`](#lrc-endpoint-edit-endpoint)
-* [`lrc endpoint new ENDPOINT`](#lrc-endpoint-new-endpoint)
-* [`lrc env get`](#lrc-env-get)
-* [`lrc env set ENVIRONMENT`](#lrc-env-set-environment)
-* [`lrc help [COMMAND]`](#lrc-help-command)
-* [`lrc payload edit PAYLOAD`](#lrc-payload-edit-payload)
-* [`lrc payload new PAYLOAD`](#lrc-payload-new-payload)
-* [`lrc pe PAYLOAD`](#lrc-pe-payload)
-* [`lrc plugins`](#lrc-plugins)
-* [`lrc plugins:install PLUGIN...`](#lrc-pluginsinstall-plugin)
-* [`lrc plugins:inspect PLUGIN...`](#lrc-pluginsinspect-plugin)
-* [`lrc plugins:install PLUGIN...`](#lrc-pluginsinstall-plugin-1)
-* [`lrc plugins:link PLUGIN`](#lrc-pluginslink-plugin)
-* [`lrc plugins:uninstall PLUGIN...`](#lrc-pluginsuninstall-plugin)
-* [`lrc plugins:uninstall PLUGIN...`](#lrc-pluginsuninstall-plugin-1)
-* [`lrc plugins:uninstall PLUGIN...`](#lrc-pluginsuninstall-plugin-2)
-* [`lrc plugins update`](#lrc-plugins-update)
-* [`lrc pn PAYLOAD`](#lrc-pn-payload)
-* [`lrc script execute SCRIPT`](#lrc-script-execute-script)
-* [`lrc se SCRIPT`](#lrc-se-script)
-* [`lrc send REQUESTPATH`](#lrc-send-requestpath)
+
+- [`lrc BaseCommand`](#lrc-basecommand)
+- [`lrc ee ENDPOINT`](#lrc-ee-endpoint)
+- [`lrc en ENDPOINT`](#lrc-en-endpoint)
+- [`lrc endpoint edit ENDPOINT`](#lrc-endpoint-edit-endpoint)
+- [`lrc endpoint new ENDPOINT`](#lrc-endpoint-new-endpoint)
+- [`lrc env get`](#lrc-env-get)
+- [`lrc env set ENVIRONMENT`](#lrc-env-set-environment)
+- [`lrc help [COMMAND]`](#lrc-help-command)
+- [`lrc payload edit PAYLOAD`](#lrc-payload-edit-payload)
+- [`lrc payload new PAYLOAD`](#lrc-payload-new-payload)
+- [`lrc pe PAYLOAD`](#lrc-pe-payload)
+- [`lrc plugins`](#lrc-plugins)
+- [`lrc plugins:install PLUGIN...`](#lrc-pluginsinstall-plugin)
+- [`lrc plugins:inspect PLUGIN...`](#lrc-pluginsinspect-plugin)
+- [`lrc plugins:install PLUGIN...`](#lrc-pluginsinstall-plugin-1)
+- [`lrc plugins:link PLUGIN`](#lrc-pluginslink-plugin)
+- [`lrc plugins:uninstall PLUGIN...`](#lrc-pluginsuninstall-plugin)
+- [`lrc plugins:uninstall PLUGIN...`](#lrc-pluginsuninstall-plugin-1)
+- [`lrc plugins:uninstall PLUGIN...`](#lrc-pluginsuninstall-plugin-2)
+- [`lrc plugins update`](#lrc-plugins-update)
+- [`lrc pn PAYLOAD`](#lrc-pn-payload)
+- [`lrc script execute SCRIPT`](#lrc-script-execute-script)
+- [`lrc se SCRIPT`](#lrc-se-script)
+- [`lrc send REQUESTPATH`](#lrc-send-requestpath)
 
 ## `lrc BaseCommand`
 
@@ -417,7 +450,7 @@ EXAMPLES
   Create new payload (y/n): n
   endpoints/example.json
   POST {{baseUrl}}/test
-  
+
 
   $ lrc en endpoints/example.json
   URL: {{baseUrl}}/api/test
@@ -494,7 +527,7 @@ EXAMPLES
   Create new payload (y/n): n
   endpoints/example.json
   POST {{baseUrl}}/test
-  
+
 
   $ lrc endpoint new endpoints/example.json
   URL: {{baseUrl}}/api/test
@@ -724,7 +757,7 @@ ALIASES
   $ lrc plugins add
 
 EXAMPLES
-  $ lrc plugins:install myplugin 
+  $ lrc plugins:install myplugin
 
   $ lrc plugins:install https://github.com/someuser/someplugin
 
@@ -784,7 +817,7 @@ ALIASES
   $ lrc plugins add
 
 EXAMPLES
-  $ lrc plugins:install myplugin 
+  $ lrc plugins:install myplugin
 
   $ lrc plugins:install https://github.com/someuser/someplugin
 
@@ -1054,4 +1087,5 @@ EXAMPLES
 ```
 
 _See code: [dist/commands/send/index.ts](https://github.com/lmnch/lrclient-cli/blob/v0.0.8/dist/commands/send/index.ts)_
+
 <!-- commandsstop -->

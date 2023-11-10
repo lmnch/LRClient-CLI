@@ -1,6 +1,6 @@
 {
-    "url": "{{baseUrl}}/start",
-    "headers": {
-        "Authorization": "Basic {{repository}}"
-    }
+  "url": "{{baseUrl}}/start",
+  "headers": {
+    "Authorization": "Basic {{repository}}"
+  }
 }

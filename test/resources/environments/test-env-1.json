@@ -1,12 +1,11 @@
-
 {
-    "headers": {
-      "Authorization": "Bearer {{bearerToken}}"
-    },
-    "variables": {
-      "baseUrl": "https://test.url",
-      "user": "lmnch",
-      "repository": "LRClient",
-      "requestUrl": "{{baseUrl}}/{{user}}/{{repository}}"
-    }
+  "headers": {
+    "Authorization": "Bearer {{bearerToken}}"
+  },
+  "variables": {
+    "baseUrl": "https://test.url",
+    "user": "lmnch",
+    "repository": "LRClient",
+    "requestUrl": "{{baseUrl}}/{{user}}/{{repository}}"
   }
+}
