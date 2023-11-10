@@ -1,7 +1,9 @@
 import * as fs from 'fs';
 import { Command } from '@oclif/core';
-import { ConfigManager, loadEnvironment, LRCLogger } from 'lrclient';
-export default class GetEnvironment extends Command {
+import { ConfigManager, loadEnvironment, LRCLogger, LRCLoggerConfig } from 'lrclient';
+import BaseCommand from '../BaseCommand';
+
+export default class GetEnvironment extends BaseCommand {
   static description = 'Returns the currently selected environment.'
 
   static examples = [
@@ -23,12 +25,13 @@ requestUrl={{baseUrl}}/{{user}}/{{repository}}
 
   static args = []
 
-  static logger = new LRCLogger();
+  static logger = new LRCLogger(new LRCLoggerConfig({logEnvironments: true}));
   static configManager = new ConfigManager();
 
   async run(): Promise<void> {
+    const { flags } = await this.parse(GetEnvironment);
     // console.debug("Loading config...")
-    const config = await GetEnvironment.configManager.loadConfig();
+    const config= await this.getConfigManager(flags).loadConfig();
     // console.debug("Loaded config.")
     if (config.selectedEnvironment) {
       const env = await loadEnvironment(config.selectedEnvironment);
