@@ -1,39 +1,31 @@
 {
   "version": "0.2.0",
   "configurations": [
-      {
-          "type": "node",
-          "request": "launch",
-          "name": "Execute Command",
-          "skipFiles": [
-              "<node_internals>/**"
-          ],
-          "program": "${workspaceFolder}/bin/dev",
-          "args": [
-            "hello",
-            "world",
-          ],
-      },
-      {
-        "type": "node",
-        "request": "launch",
-        "name": "Mocha Tests",
-        "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-        "args": [
-          "--require",
-          "${workspaceFolder}/test/helpers/init.js",
-          "--reporter",
-          "dot",
-          "--slow",
-          "5000",
-          "--colors",
-          "${workspaceFolder}/test/**/*.test.js",
-  
-        ],
-        "internalConsoleOptions": "openOnSessionStart",
-        "skipFiles": [
-          "<node_internals>/**"
-        ]
-      }
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Execute Command",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/bin/dev",
+      "args": ["hello", "world"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Mocha Tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": [
+        "--require",
+        "${workspaceFolder}/test/helpers/init.js",
+        "--reporter",
+        "dot",
+        "--slow",
+        "5000",
+        "--colors",
+        "${workspaceFolder}/test/**/*.test.js"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "skipFiles": ["<node_internals>/**"]
+    }
   ]
 }
