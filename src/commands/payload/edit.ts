@@ -1,10 +1,10 @@
-import { loadPayload, LRCLogger, storePayload } from "lrclient";
-import { launchEditor } from "../../external/launch-editor";
-import BaseCommand from "../base-command";
+import {loadPayload, LRCLogger, storePayload} from 'lrclient';
+import {launchEditor} from '../../external/launch-editor';
+import BaseCommand from '../base-command';
 
 export default class EditPayload extends BaseCommand {
   static description =
-    "Updates the payload data of the passed payload definition";
+    'Updates the payload data of the passed payload definition';
 
   static examples = [
     `<%= config.bin %> <%= command.id %> payloads/example.json
@@ -19,16 +19,16 @@ Type: application/json
   static flags = {};
   static args = [
     {
-      name: "payload",
-      description: "Path to the payload definition json file",
+      name: 'payload',
+      description: 'Path to the payload definition json file',
       required: true,
     },
   ];
 
-  static aliases = ["pe"];
+  static aliases = ['pe'];
 
   async run(): Promise<void> {
-    const { args } = await this.parse(EditPayload);
+    const {args} = await this.parse(EditPayload);
 
     const payload = await loadPayload(args.payload);
 

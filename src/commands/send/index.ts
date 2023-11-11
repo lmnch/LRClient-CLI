@@ -1,9 +1,9 @@
-import { CliUx, Flags } from "@oclif/core";
-import { LRClient, LRCListener, LRCRequest, LRCResponse } from "lrclient";
-import BaseCommand from "../base-command";
+import {CliUx, Flags} from '@oclif/core';
+import {LRClient, LRCListener, LRCRequest, LRCResponse} from 'lrclient';
+import BaseCommand from '../base-command';
 
 export default class Send extends BaseCommand implements LRCListener {
-  static description = "Performs a REST call to a endpoint";
+  static description = 'Performs a REST call to a endpoint';
 
   static examples = [
     `$ <%= config.bin %> <%= command.id %> endpoints/examplerequest.json --localVariable "user: lukas"
@@ -42,15 +42,15 @@ referrer-policy: no-referrer
 
   static flags = {
     localVariable: Flags.string({
-      char: "v",
+      char: 'v',
       description:
-        "Local variables to overwrite endpoint or environment variables",
+        'Local variables to overwrite endpoint or environment variables',
       required: false,
       multiple: true,
     }),
     payload: Flags.string({
-      char: "p",
-      description: "Path to the payload which should be used for the request",
+      char: 'p',
+      description: 'Path to the payload which should be used for the request',
       required: false,
       multiple: false,
     }),
@@ -58,19 +58,19 @@ referrer-policy: no-referrer
 
   static args = [
     {
-      name: "requestPath",
+      name: 'requestPath',
       description:
-        "Path to the endpoint defintion json file that should be called",
+        'Path to the endpoint defintion json file that should be called',
       required: true,
     },
   ];
 
   onRequestSent(_: LRCRequest): void {
-    CliUx.ux.action.start("Sending request", "", { stdout: true });
+    CliUx.ux.action.start('Sending request', '', {stdout: true});
   }
 
   onResponseReceived(_: LRCResponse): void {
-    CliUx.ux.action.stop("\u2713");
+    CliUx.ux.action.stop('\u2713');
     this.log();
   }
 
@@ -83,14 +83,14 @@ referrer-policy: no-referrer
       this.getLoggerConfig(flags),
       this.getConfigManager(flags),
     );
-    await client.init({ listeners: [this] });
+    await client.init({listeners: [this]});
 
     const localDefinition: { [key: string]: string } = {};
-    const { localVariable, payload } = flags;
+    const {localVariable, payload} = flags;
     if (localVariable) {
       for (const v of <Array<string>>localVariable) {
-        const [key, ...rest] = v.split("=");
-        const value = rest.join("=");
+        const [key, ...rest] = v.split('=');
+        const value = rest.join('=');
         localDefinition[key] = value;
       }
     }

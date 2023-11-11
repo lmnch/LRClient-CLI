@@ -1,10 +1,10 @@
-import { loadEndpoint, LRCLogger, LRCLoggerConfig } from "lrclient";
-import { editFile } from "../../external/launch-editor";
-import BaseCommand from "../base-command";
+import {loadEndpoint, LRCLogger, LRCLoggerConfig} from 'lrclient';
+import {editFile} from '../../external/launch-editor';
+import BaseCommand from '../base-command';
 
 export default class EditEndpoint extends BaseCommand {
   static description =
-    "Updates the endpoint configuration file in the editor set in $EDITOR variable.";
+    'Updates the endpoint configuration file in the editor set in $EDITOR variable.';
 
   static examples = [
     `<%= config.bin %> <%= command.id %> endpoints/example.json
@@ -20,23 +20,23 @@ endpoints/test.json
   static flags = {};
   static args = [
     {
-      name: "endpoint",
-      description: "Path to the endpoint definition json file",
+      name: 'endpoint',
+      description: 'Path to the endpoint definition json file',
       required: true,
     },
   ];
 
-  static aliases = ["ee"];
+  static aliases = ['ee'];
 
   async run(): Promise<void> {
-    const { args } = await this.parse(EditEndpoint);
+    const {args} = await this.parse(EditEndpoint);
 
     await editFile(args.endpoint);
 
     const endpoint = await loadEndpoint(args.endpoint);
 
     new LRCLogger(
-      new LRCLoggerConfig({ logEndpoint: true, logEndpointPayload: true }),
+      new LRCLoggerConfig({logEndpoint: true, logEndpointPayload: true}),
     ).logEndpoint(args.endpoint, endpoint);
   }
 }

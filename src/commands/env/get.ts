@@ -3,11 +3,11 @@ import {
   loadEnvironment,
   LRCLogger,
   LRCLoggerConfig,
-} from "lrclient";
-import BaseCommand from "../base-command";
+} from 'lrclient';
+import BaseCommand from '../base-command';
 
 export default class GetEnvironment extends BaseCommand {
-  static description = "Returns the currently selected environment.";
+  static description = 'Returns the currently selected environment.';
 
   static examples = [
     `<%= config.bin %> <%= command.id %>
@@ -28,11 +28,11 @@ requestUrl={{baseUrl}}/{{user}}/{{repository}}
 
   static args = [];
 
-  static logger = new LRCLogger(new LRCLoggerConfig({ logEnvironments: true }));
+  static logger = new LRCLogger(new LRCLoggerConfig({logEnvironments: true}));
   static configManager = new ConfigManager();
 
   async run(): Promise<void> {
-    const { flags } = await this.parse(GetEnvironment);
+    const {flags} = await this.parse(GetEnvironment);
     // console.debug("Loading config...")
     const config = await this.getConfigManager(flags).loadConfig();
     // console.debug("Loaded config.")
@@ -40,7 +40,7 @@ requestUrl={{baseUrl}}/{{user}}/{{repository}}
       const env = await loadEnvironment(config.selectedEnvironment);
       GetEnvironment.logger.logEnvironment(config.selectedEnvironment, env);
     } else {
-      this.log("No environment selected!");
+      this.log('No environment selected!');
     }
   }
 }

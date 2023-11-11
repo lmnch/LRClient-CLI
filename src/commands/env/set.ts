@@ -1,8 +1,8 @@
-import { loadEnvironment, LRCLogger } from "lrclient";
-import BaseCommand from "../base-command";
+import {loadEnvironment, LRCLogger} from 'lrclient';
+import BaseCommand from '../base-command';
 
 export default class SetEnvironment extends BaseCommand {
-  static description = "Updates the current working environment";
+  static description = 'Updates the current working environment';
 
   static examples = [
     `<%= config.bin %> <%= command.id %> ./env/test.json
@@ -24,14 +24,14 @@ Updated config ⚙️
 
   static args = [
     {
-      name: "environment",
-      description: "Path to the environment json file",
+      name: 'environment',
+      description: 'Path to the environment json file',
       required: true,
     },
   ];
 
   async run(): Promise<void> {
-    const { args, flags } = await this.parse(SetEnvironment);
+    const {args, flags} = await this.parse(SetEnvironment);
 
     const logger = new LRCLogger(this.getLoggerConfig(flags));
     const configManager = this.getConfigManager(flags);
@@ -45,6 +45,6 @@ Updated config ⚙️
       logger.logEnvironment(config.selectedEnvironment, env);
     }
 
-    this.log("Updated config ⚙️");
+    this.log('Updated config ⚙️');
   }
 }

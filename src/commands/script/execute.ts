@@ -1,7 +1,7 @@
-import * as vm from "node:vm";
-import * as fs from "node:fs/promises";
-import BaseCommand from "../base-command";
-import { LRClient, LRCLoggerConfig } from "lrclient";
+import * as vm from 'node:vm';
+import * as fs from 'node:fs/promises';
+import BaseCommand from '../base-command';
+import {LRClient, LRCLoggerConfig} from 'lrclient';
 
 export default class Execute extends BaseCommand {
   static description =
@@ -13,18 +13,18 @@ export default class Execute extends BaseCommand {
     `,
   ];
 
-  static aliases = ["se"];
+  static aliases = ['se'];
 
   static args = [
     {
-      name: "script",
-      description: "Path to script that should be executed",
+      name: 'script',
+      description: 'Path to script that should be executed',
       required: true,
     },
   ];
 
   async run(): Promise<void> {
-    const { args, flags } = await this.parse(Execute);
+    const {args, flags} = await this.parse(Execute);
 
     // Dependeincies
     const client = new LRClient(this.getLoggerConfig(flags));

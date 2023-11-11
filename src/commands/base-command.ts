@@ -1,33 +1,33 @@
-import { Command, Flags } from "@oclif/core";
-import { ConfigManager, LRCConstants, LRCLoggerConfig } from "lrclient";
+import {Command, Flags} from '@oclif/core';
+import {ConfigManager, LRCConstants, LRCLoggerConfig} from 'lrclient';
 
 const configFile =
   process.env[LRCConstants.ENV_LRC_CONFIG_FILE] ||
   LRCConstants.DEFAULT_CONFIG_FILE;
 
 export enum LoggedFields {
-  env = "env",
-  endpoint = "endpoint",
-  endpointPayload = "endpoint_payload",
-  req = "req",
-  reqBody = "req_body",
-  resp = "resp",
-  respBody = "resp_body",
+  env = 'env',
+  endpoint = 'endpoint',
+  endpointPayload = 'endpoint_payload',
+  req = 'req',
+  reqBody = 'req_body',
+  resp = 'resp',
+  respBody = 'resp_body',
 }
 
 export default abstract class BaseCommand extends Command {
   static globalFlags = {
     loggedFields: Flags.enum<LoggedFields>({
-      summary: "Specify level for logging.",
+      summary: 'Specify level for logging.',
       options: Object.values(LoggedFields),
-      helpGroup: "GLOBAL",
+      helpGroup: 'GLOBAL',
       multiple: true,
-      aliases: ["l"],
+      aliases: ['l'],
     }),
     config: Flags.string({
       summary:
         "Path to the lrc config file. Can be also set via LRC_CONFIG_FILE env const and is per default './.config'",
-      helpGroup: "GLOBAL",
+      helpGroup: 'GLOBAL',
       multiple: false,
     }),
   };

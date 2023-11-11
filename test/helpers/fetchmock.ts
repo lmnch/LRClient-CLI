@@ -45,7 +45,7 @@ export class ContainsAll<V> implements CallAssertion<{ [key: string]: V }> {
   }
 
   matches(param: { [key: string]: V }): boolean {
-    return this.#containMatchers.every((matcher) => matcher.matches(param));
+    return this.#containMatchers.every(matcher => matcher.matches(param));
   }
 }
 
@@ -56,8 +56,7 @@ export class Any<T> implements CallAssertion<T> {
 }
 
 export class FetchCallAssertions
-  implements CallAssertion<[RequestInfo | URL, RequestInit?]>
-{
+implements CallAssertion<[RequestInfo | URL, RequestInit?]> {
   resource: CallAssertion<RequestInfo | URL | string> = new Any();
   method: CallAssertion<string | undefined> = new Any();
   queryParams: CallAssertion<URLSearchParams> = new Any();
@@ -88,7 +87,7 @@ export class FetchCallAssertions
       }
     }
 
-    const [, queryParamString] = resource.toString().split("?");
+    const [, queryParamString] = resource.toString().split('?');
     const queryParams = new URLSearchParams(queryParamString);
 
     return (
@@ -146,5 +145,5 @@ global.fetch = (
     }
   }
 
-  throw new Error("Resource not mocked!");
+  throw new Error('Resource not mocked!');
 };
