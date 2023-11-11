@@ -9,7 +9,7 @@ import {
 } from './../../helpers/fetchmock';
 import {
   expectNextLineToBe,
-  expectNextLineToStartWith,
+  skipLineIfEq,
 } from '../../helpers/expect-next-line';
 
 /**
@@ -63,9 +63,9 @@ describe('send-200-var-replacement', () => {
       // new line
       expectNextLineToBe(output, '');
       // sending output
-      expectNextLineToBe(output, 'Sending request...');
-      // ✓ might not be rendered in every terminal
-      expectNextLineToStartWith(output, 'Sending request... ');
+      // some terminals print this again
+      skipLineIfEq(output, 'Sending request...');
+      expectNextLineToBe(output, 'Sending request... ✓');
       // new line
       expectNextLineToBe(output, '');
       expectNextLineToBe(output, 'Response:');
@@ -127,9 +127,9 @@ describe('send-200-env-var', () => {
       // new line
       expectNextLineToBe(output, '');
       // cool checkbox
-      expectNextLineToBe(output, 'Sending request...');
-      // ✓ might not be rendered in every terminal
-      expectNextLineToStartWith(output, 'Sending request... ');
+      // some terminals print this again
+      skipLineIfEq(output, 'Sending request...');
+      expectNextLineToBe(output, 'Sending request... ✓');
       // new line
       expectNextLineToBe(output, '');
       expectNextLineToBe(output, 'Response:');
@@ -183,10 +183,9 @@ describe('send-200-env-var', () => {
       expectNextLineToBe(output, ' GET {{baseUrl}}/start');
       expectNextLineToBe(output, 'Authorization: Basic {{repository}}');
       expectNextLineToBe(output, '');
-      // Always printed because not directly part of the logger
-      expectNextLineToBe(output, 'Sending request...');
-      // ✓ might not be rendered in every terminal
-      expectNextLineToStartWith(output, 'Sending request... ');
+      // some terminals print this again
+      skipLineIfEq(output, 'Sending request...');
+      expectNextLineToBe(output, 'Sending request... ✓');
       expectNextLineToBe(output, '');
       expectNextLineToBe(output, '');
 

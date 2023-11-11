@@ -9,7 +9,7 @@ import {
 } from './../../helpers/fetchmock';
 import {
   expectNextLineToBe,
-  expectNextLineToStartWith,
+  skipLineIfEq,
 } from '../../helpers/expect-next-line';
 
 /**
@@ -77,9 +77,8 @@ describe('send-upload-post-200', () => {
       // new line
       expectNextLineToBe(output, '');
       // cool checkbox
-      expectNextLineToBe(output, 'Sending request...');
-      // ✓ might not be rendered in every terminal
-      expectNextLineToStartWith(output, 'Sending request... ');
+      skipLineIfEq(output, 'Sending request...');
+      expectNextLineToBe(output, 'Sending request... ✓');
       // new line
       expectNextLineToBe(output, '');
       expectNextLineToBe(output, 'Response:');

@@ -8,7 +8,7 @@ import {
 } from './../../helpers/fetchmock';
 import {
   expectNextLineToBe,
-  expectNextLineToStartWith,
+  skipLineIfEq,
 } from '../../helpers/expect-next-line';
 
 /**
@@ -61,10 +61,9 @@ describe('send-403', () => {
       expectNextLineToBe(output, 'Authorization: Basic LRClient');
       // new line
       expectNextLineToBe(output, '');
-      // cool checkbox
-      expectNextLineToBe(output, 'Sending request...');
-      // ✓ might not be rendered in every terminal
-      expectNextLineToStartWith(output, 'Sending request... ');
+      // some terminals print this again
+      skipLineIfEq(output, 'Sending request...');
+      expectNextLineToBe(output, 'Sending request... ✓');
       // new line
       expectNextLineToBe(output, '');
       expectNextLineToBe(output, 'Response:');
