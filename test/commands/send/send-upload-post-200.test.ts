@@ -1,6 +1,13 @@
 import { expect, test } from "@oclif/test";
-import { mock, clearMocks, FetchCallAssertions, Eq, ContainsAll, Contains, Any } from './../../helpers/fetchmock';
-import { expectNextLineToBe } from "../../helpers/expectNextLineToBe";
+import {
+  mock,
+  clearMocks,
+  FetchCallAssertions,
+  Eq,
+  ContainsAll,
+  Any,
+} from "./../../helpers/fetchmock";
+import { expectNextLineToBe } from "../../helpers/expect-next-line-to-be";
 
 /**
  * Naming of the test:
@@ -9,30 +16,39 @@ import { expectNextLineToBe } from "../../helpers/expectNextLineToBe";
  * The test resources are stored in test/resources.
  */
 describe("send-upload-post-200", () => {
-  beforeEach(()=>{
+  beforeEach(() => {
     // Prepare assertions
     const assertions = new FetchCallAssertions();
-    assertions.resource = new Eq<RequestInfo|URL>(new URL("https://test.url/upload"));
+    assertions.resource = new Eq<RequestInfo | URL | string>(
+      "https://test.url/upload",
+    );
     assertions.method = new Eq("POST");
-    assertions.headerParams = new Contains("Authorization", "Bearer 123");
-    assertions.payloadParams = { matches: (payload: any) : boolean => {
-      const obj = JSON.parse(payload);
-      const test : any[] = obj.test;
+    assertions.headerParams = new ContainsAll({ Authorization: "Bearer 123" });
+    assertions.payloadParams = {
+      matches: (payload: any): boolean => {
+        const obj = JSON.parse(payload);
+        const test: any[] = obj.test;
 
-      return test[0].entry1 === 137 &&
-        test[1] === 42 &&
-        test[2] === "42";
-    }};
+        return test[0].entry1 === 137 && test[1] === 42 && test[2] === "42";
+      },
+    };
     assertions.payloadParams = new Any();
 
     const responseHeaders = new Headers();
-    responseHeaders.append("content-type", "application/json")
+    responseHeaders.append("content-type", "application/json");
 
-    mock(assertions, new Response(JSON.stringify({test:"json"}), {status: 200, statusText: "Ok", headers: responseHeaders }));
+    mock(
+      assertions,
+      new Response(JSON.stringify({ test: "json" }), {
+        status: 200,
+        statusText: "Ok",
+        headers: responseHeaders,
+      }),
+    );
   });
 
   test
-   .stdout()
+    .stdout()
     .command([
       "send",
       "test/resources/collections/url-upload-post.json",
@@ -84,8 +100,7 @@ describe("send-upload-post-200", () => {
   //   expect(error.message).to.be.eq("Variable value3 not defined in scope!");
   // });
 
-    afterEach(()=>{
-      clearMocks();
-    });
+  afterEach(() => {
+    clearMocks();
+  });
 });
-

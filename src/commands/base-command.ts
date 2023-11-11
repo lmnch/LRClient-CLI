@@ -1,9 +1,5 @@
 import { Command, Flags } from "@oclif/core";
-import {
-  ConfigManager,
-  LRCConstants,
-  LRCLoggerConfig,
-} from "lrclient";
+import { ConfigManager, LRCConstants, LRCLoggerConfig } from "lrclient";
 
 const configFile =
   process.env[LRCConstants.ENV_LRC_CONFIG_FILE] ||
@@ -12,11 +8,11 @@ const configFile =
 export enum LoggedFields {
   env = "env",
   endpoint = "endpoint",
-  endpoint_payload = `endpoint_payload`,
+  endpointPayload = "endpoint_payload",
   req = "req",
-  req_body = "req_body",
+  reqBody = "req_body",
   resp = "resp",
-  resp_body = "resp_body",
+  respBody = "resp_body",
 }
 
 export default abstract class BaseCommand extends Command {
@@ -45,17 +41,18 @@ export default abstract class BaseCommand extends Command {
    */
   getLoggerConfig(flags: any): LRCLoggerConfig {
     const fields = flags.loggedFields;
-    if (!fields || fields.length == 0) {
+    if (!fields || fields.length === 0) {
       return this._getDefaultLogging();
     }
+
     return new LRCLoggerConfig({
       logEndpoint: fields.includes(LoggedFields.endpoint),
-      logEndpointPayload: fields.includes(LoggedFields.endpoint_payload),
+      logEndpointPayload: fields.includes(LoggedFields.endpointPayload),
       logEnvironments: fields.includes(LoggedFields.env),
       logResponse: fields.includes(LoggedFields.resp),
-      logRequestBody: fields.includes(LoggedFields.req_body),
+      logRequestBody: fields.includes(LoggedFields.reqBody),
       logRequest: fields.includes(LoggedFields.req),
-      logResponseBody: fields.includes(LoggedFields.resp_body),
+      logResponseBody: fields.includes(LoggedFields.respBody),
     });
   }
 
@@ -71,14 +68,15 @@ export default abstract class BaseCommand extends Command {
    *  <li>Default value './.config'</li>
    * </ol>
    *
-   * @param flags
-   * @returns
+   * @param flags that were passed to the command
+   * @returns lrc config manager
    */
   getConfigManager(flags: any): ConfigManager {
     const config = flags.config;
     if (!config) {
       return this._getDefaultConfigManager();
     }
+
     return new ConfigManager(config);
   }
 

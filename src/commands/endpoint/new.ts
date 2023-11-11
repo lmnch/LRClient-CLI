@@ -53,6 +53,7 @@ endpoints/example.json
       required: true,
     },
   ];
+
   static aliases = ["en"];
   static flags = {
     url: Flags.string({
@@ -83,7 +84,7 @@ endpoints/example.json
     }),
     payload: Flags.string({
       char: "p",
-      description: `Path to payload for the endpoint.`,
+      description: "Path to payload for the endpoint.",
       required: false,
       multiple: false,
     }),
@@ -108,22 +109,22 @@ endpoints/example.json
       this.log(method);
     }
 
-    let passedHeaders = flags.headers;
+    const passedHeaders = flags.headers;
     const headers: { [key: string]: Variable } = {};
     if (passedHeaders) {
-      (<Array<String>>passedHeaders).forEach((v) => {
+      for (const v of <Array<string>>passedHeaders) {
         const [key, value] = v.split(": ");
         headers[key] = new Variable(`HEADER_${key}`, value);
-      });
+      }
     }
 
-    let passedVariables = flags.localVariable;
+    const passedVariables = flags.localVariable;
     const variables: { [key: string]: string } = {};
     if (passedVariables) {
-      (<Array<String>>passedVariables).forEach((v) => {
+      for (const v of <Array<string>>passedVariables) {
         const [key, value] = v.split(": ");
         variables[key] = value;
-      });
+      }
     }
 
     let payloadPath = flags.payload;

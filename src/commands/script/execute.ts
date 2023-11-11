@@ -1,13 +1,12 @@
-import { Command } from "@oclif/core";
 import * as vm from "node:vm";
-import * as fs from "fs/promises";
-import BaseCommand from "../BaseCommand";
+import * as fs from "node:fs/promises";
+import BaseCommand from "../base-command";
 import { LRClient, LRCLoggerConfig } from "lrclient";
 
 export default class Execute extends BaseCommand {
   static description =
-    `Executes a ECMA script by providing LRClient as "lrc" variable in the context of an async method (=> "await" can be used).` +
-    ` Additionally "log" can be used to log stuff like "console.log" (but this one is not working).`;
+    'Executes a ECMA script by providing LRClient as "lrc" variable in the context of an async method (=> "await" can be used).' +
+    ' Additionally "log" can be used to log stuff like "console.log" (but this one is not working).';
 
   static examples = [
     `<%= config.bin %> <%= command.id %> ./scripts/testscript.js

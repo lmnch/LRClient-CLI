@@ -1,6 +1,13 @@
 import { expect, test } from "@oclif/test";
-import { mock, clearMocks, FetchCallAssertions, Eq, ContainsAll, Contains } from './../../helpers/fetchmock';
-import { expectNextLineToBe } from "../../helpers/expectNextLineToBe";
+import {
+  mock,
+  clearMocks,
+  FetchCallAssertions,
+  Eq,
+  ContainsAll,
+  Contains,
+} from "./../../helpers/fetchmock";
+import { expectNextLineToBe } from "../../helpers/expect-next-line-to-be";
 
 /**
  * Naming of the test:
@@ -9,18 +16,27 @@ import { expectNextLineToBe } from "../../helpers/expectNextLineToBe";
  * The test resources are stored in test/resources.
  */
 describe("send-200-var-replacement", () => {
-  beforeEach(()=>{
+  beforeEach(() => {
     // Prepare assertions
     const assertions = new FetchCallAssertions();
-    assertions.resource = new Eq<RequestInfo|URL>(new URL("https://test.url/start"));
+    assertions.resource = new Eq<RequestInfo | URL | string>(
+      "https://test.url/start",
+    );
     assertions.method = new Eq("GET");
     assertions.headerParams = new Contains("Authorization", "Bearer 3");
 
     const responseHeaders = new Headers();
-    responseHeaders.append("content-type", "application/json")
+    responseHeaders.append("content-type", "application/json");
 
-    mock(assertions, new Response(JSON.stringify({test:"json"}), {status: 200, statusText: "Ok", headers: responseHeaders }));
-  })
+    mock(
+      assertions,
+      new Response(JSON.stringify({ test: "json" }), {
+        status: 200,
+        statusText: "Ok",
+        headers: responseHeaders,
+      }),
+    );
+  });
 
   test
     .stdout()
@@ -61,21 +77,31 @@ describe("send-200-var-replacement", () => {
         expect(output.length).to.eq(0);
       },
     );
-
 });
 
-describe("send-200-env-var", ()=>{
-  beforeEach(()=>{
+describe("send-200-env-var", () => {
+  beforeEach(() => {
     // Prepare assertions
     const assertions = new FetchCallAssertions();
-    assertions.resource = new Eq<RequestInfo|URL>(new URL("https://test.url/start"));
+    assertions.resource = new Eq<RequestInfo | URL | string>(
+      "https://test.url/start",
+    );
     assertions.method = new Eq("GET");
-    assertions.headerParams = new ContainsAll({"Authorization": "Basic LRClient"});
+    assertions.headerParams = new ContainsAll({
+      Authorization: "Basic LRClient",
+    });
 
     const responseHeaders = new Headers();
-    responseHeaders.append("content-type", "application/json")
+    responseHeaders.append("content-type", "application/json");
 
-    mock(assertions, new Response(JSON.stringify({test:"json"}), {status: 200, statusText: "Ok", headers: responseHeaders }));
+    mock(
+      assertions,
+      new Response(JSON.stringify({ test: "json" }), {
+        status: 200,
+        statusText: "Ok",
+        headers: responseHeaders,
+      }),
+    );
   });
 
   test
@@ -83,7 +109,7 @@ describe("send-200-env-var", ()=>{
     .command([
       "send",
       "--config=./test/resources/test.config",
-      "test/resources/collections/url-start-header.json"
+      "test/resources/collections/url-start-header.json",
     ])
     .it(
       "[test-env|url-start-header] should overwrite endpoint header with environment variable",
@@ -163,8 +189,7 @@ describe("send-200-env-var", ()=>{
       },
     );
 
-    afterEach(()=>{
-      clearMocks();
-    });
+  afterEach(() => {
+    clearMocks();
+  });
 });
-

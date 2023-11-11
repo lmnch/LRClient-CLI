@@ -1,7 +1,6 @@
-import { CliUx, Command, Flags } from "@oclif/core";
-import * as fs from "fs";
+import { CliUx, Flags } from "@oclif/core";
 import { LRClient, LRCListener, LRCRequest, LRCResponse } from "lrclient";
-import BaseCommand from "../BaseCommand";
+import BaseCommand from "../base-command";
 
 export default class Send extends BaseCommand implements LRCListener {
   static description = "Performs a REST call to a endpoint";
@@ -66,17 +65,19 @@ referrer-policy: no-referrer
     },
   ];
 
-  onRequestSent(request: LRCRequest): void {
+  onRequestSent(_: LRCRequest): void {
     CliUx.ux.action.start("Sending request", "", { stdout: true });
   }
 
-  onResponseReceived(response: LRCResponse): void {
+  onResponseReceived(_: LRCResponse): void {
     CliUx.ux.action.stop("\u2713");
     this.log();
   }
 
   async run(): Promise<void> {
-    const { args, flags } = await this.parse(Send);
+    const parsed = await this.parse(Send);
+    const flags = parsed.flags;
+    const args = parsed.args;
 
     const client = new LRClient(
       this.getLoggerConfig(flags),
@@ -85,20 +86,15 @@ referrer-policy: no-referrer
     await client.init({ listeners: [this] });
 
     const localDefinition: { [key: string]: string } = {};
-    const { localVariable } = flags;
+    const { localVariable, payload } = flags;
     if (localVariable) {
-      (<Array<String>>localVariable).forEach((v) => {
+      for (const v of <Array<string>>localVariable) {
         const [key, ...rest] = v.split("=");
         const value = rest.join("=");
         localDefinition[key] = value;
-      });
+      }
     }
 
-    const result = await client.send(
-      args.requestPath,
-      localDefinition,
-      flags.payload,
-    );
-    // this.log(result)
+    await client.send(args.requestPath, localDefinition, payload);
   }
 }

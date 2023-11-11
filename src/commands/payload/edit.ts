@@ -1,8 +1,8 @@
-import { Command } from "@oclif/core";
 import { loadPayload, LRCLogger, storePayload } from "lrclient";
-import { launchEditor } from "../../external/LaunchEditor";
+import { launchEditor } from "../../external/launch-editor";
+import BaseCommand from "../base-command";
 
-export default class EditPayload extends Command {
+export default class EditPayload extends BaseCommand {
   static description =
     "Updates the payload data of the passed payload definition";
 
@@ -24,10 +24,11 @@ Type: application/json
       required: true,
     },
   ];
+
   static aliases = ["pe"];
 
   async run(): Promise<void> {
-    const { args, flags } = await this.parse(EditPayload);
+    const { args } = await this.parse(EditPayload);
 
     const payload = await loadPayload(args.payload);
 

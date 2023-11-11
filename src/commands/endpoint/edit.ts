@@ -1,8 +1,8 @@
-import { Command } from "@oclif/core";
 import { loadEndpoint, LRCLogger, LRCLoggerConfig } from "lrclient";
-import { editFile } from "../../external/LaunchEditor";
+import { editFile } from "../../external/launch-editor";
+import BaseCommand from "../base-command";
 
-export default class EditEndpoint extends Command {
+export default class EditEndpoint extends BaseCommand {
   static description =
     "Updates the endpoint configuration file in the editor set in $EDITOR variable.";
 
@@ -25,10 +25,11 @@ endpoints/test.json
       required: true,
     },
   ];
+
   static aliases = ["ee"];
 
   async run(): Promise<void> {
-    const { args, flags } = await this.parse(EditEndpoint);
+    const { args } = await this.parse(EditEndpoint);
 
     await editFile(args.endpoint);
 

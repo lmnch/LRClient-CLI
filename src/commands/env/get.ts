@@ -1,12 +1,10 @@
-import * as fs from "fs";
-import { Command } from "@oclif/core";
 import {
   ConfigManager,
   loadEnvironment,
   LRCLogger,
   LRCLoggerConfig,
 } from "lrclient";
-import BaseCommand from "../BaseCommand";
+import BaseCommand from "../base-command";
 
 export default class GetEnvironment extends BaseCommand {
   static description = "Returns the currently selected environment.";
@@ -42,7 +40,7 @@ requestUrl={{baseUrl}}/{{user}}/{{repository}}
       const env = await loadEnvironment(config.selectedEnvironment);
       GetEnvironment.logger.logEnvironment(config.selectedEnvironment, env);
     } else {
-      this.log(`No environment selected!`);
+      this.log("No environment selected!");
     }
   }
 }

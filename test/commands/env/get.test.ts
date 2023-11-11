@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "node:fs";
 import { expect, test } from "@oclif/test";
 
 describe("env:get", () => {
@@ -7,6 +7,7 @@ describe("env:get", () => {
     if (!fs.existsSync("./tmp")) {
       fs.mkdirSync("./tmp");
     }
+
     fs.writeFileSync(
       "./tmp/testenvironment.json",
       '{"headers":{"X-Test":"Header value"},"variables":{"var":"test"}}',
@@ -15,10 +16,7 @@ describe("env:get", () => {
       "./tmp/testconfig-with-environment.json",
       '{"selectedEnvironment":"./tmp/testenvironment.json"}',
     );
-    fs.writeFileSync(
-      "./tmp/testconfig-without-environment.json",
-      '{}',
-    );
+    fs.writeFileSync("./tmp/testconfig-without-environment.json", "{}");
   });
 
   test

@@ -1,4 +1,4 @@
-import { CliUx, Command, Flags } from "@oclif/core";
+import { CliUx, Flags } from "@oclif/core";
 import * as cliSelect from "cli-select-2";
 import {
   Payload,
@@ -9,9 +9,10 @@ import {
   PayloadType,
   storePayload,
 } from "lrclient";
-import { launchEditor } from "../../external/LaunchEditor";
+import { launchEditor } from "../../external/launch-editor";
+import BaseCommand from "../base-command";
 
-export default class NewPayload extends Command {
+export default class NewPayload extends BaseCommand {
   static description = "Creates a new payload configuration file";
 
   static examples = [
@@ -36,7 +37,9 @@ Type: application/json
       required: true,
     },
   ];
+
   static aliases = ["pn"];
+
   static flags = {
     payloadType: Flags.string({
       char: "t",
@@ -51,7 +54,7 @@ Type: application/json
   async run(): Promise<void> {
     const { args, flags } = await this.parse(NewPayload);
 
-    let payloadType = flags.type;
+    let payloadType = flags.payloadType;
 
     if (!payloadType) {
       this.log("Payload Type:");
@@ -81,6 +84,7 @@ Type: application/json
       default:
         break;
     }
+
     throw new Error(`Could not read payload type ${payloadType}.`);
   }
 }

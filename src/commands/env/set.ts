@@ -1,5 +1,5 @@
-import { ConfigManager, loadEnvironment, LRCLogger } from "lrclient";
-import BaseCommand from "../BaseCommand";
+import { loadEnvironment, LRCLogger } from "lrclient";
+import BaseCommand from "../base-command";
 
 export default class SetEnvironment extends BaseCommand {
   static description = "Updates the current working environment";
@@ -29,7 +29,6 @@ Updated config ⚙️
       required: true,
     },
   ];
-
 
   async run(): Promise<void> {
     const { args, flags } = await this.parse(SetEnvironment);

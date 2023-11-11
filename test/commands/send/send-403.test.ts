@@ -1,6 +1,12 @@
 import { expect, test } from "@oclif/test";
-import { mock, clearMocks, FetchCallAssertions, Eq, ContainsAll, Contains } from './../../helpers/fetchmock';
-import { expectNextLineToBe } from "../../helpers/expectNextLineToBe";
+import {
+  mock,
+  clearMocks,
+  FetchCallAssertions,
+  Eq,
+  ContainsAll,
+} from "./../../helpers/fetchmock";
+import { expectNextLineToBe } from "../../helpers/expect-next-line-to-be";
 
 /**
  * Naming of the test:
@@ -9,17 +15,28 @@ import { expectNextLineToBe } from "../../helpers/expectNextLineToBe";
  * The test resources are stored in test/resources.
  */
 describe("send-403", () => {
-  beforeEach(()=>{
+  beforeEach(() => {
     // Prepare assertions
     const assertions = new FetchCallAssertions();
-    assertions.resource = new Eq<RequestInfo|URL>(new URL("https://test.url/start"));
+    assertions.resource = new Eq<RequestInfo | URL | string>(
+      "https://test.url/start",
+    );
     assertions.method = new Eq("GET");
-    assertions.headerParams = new Contains("Authorization", "Basic LRClient");
+    assertions.headerParams = new ContainsAll({
+      Authorization: "Basic LRClient",
+    });
 
     const responseHeaders = new Headers();
-    responseHeaders.append("content-type", "application/json")
+    responseHeaders.append("content-type", "application/json");
 
-    mock(assertions, new Response(JSON.stringify({}), {status: 403, statusText: "Forbidden", headers: responseHeaders }));
+    mock(
+      assertions,
+      new Response(JSON.stringify({}), {
+        status: 403,
+        statusText: "Forbidden",
+        headers: responseHeaders,
+      }),
+    );
   });
 
   test
@@ -27,7 +44,7 @@ describe("send-403", () => {
     .command([
       "send",
       "--config=./test/resources/test.config",
-      "test/resources/collections/url-start-header.json"
+      "test/resources/collections/url-start-header.json",
     ])
     .it(
       "[test-env|url-start-header] should overwrite endpoint header with environment variable",
@@ -57,9 +74,7 @@ describe("send-403", () => {
       },
     );
 
-    afterEach(()=>{
-      clearMocks();
-    });
+  afterEach(() => {
+    clearMocks();
+  });
 });
-
-
