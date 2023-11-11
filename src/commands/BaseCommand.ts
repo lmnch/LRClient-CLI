@@ -2,7 +2,6 @@ import { Command, Flags } from "@oclif/core";
 import {
   ConfigManager,
   LRCConstants,
-  LRClient,
   LRCLoggerConfig,
 } from "lrclient";
 

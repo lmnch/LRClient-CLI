@@ -88,7 +88,8 @@ referrer-policy: no-referrer
     const { localVariable } = flags;
     if (localVariable) {
       (<Array<String>>localVariable).forEach((v) => {
-        const [key, value] = v.split(": ");
+        const [key, ...rest] = v.split("=");
+        const value = rest.join("=");
         localDefinition[key] = value;
       });
     }

@@ -1,8 +1,7 @@
-import * as fs from "fs";
-import { Command } from "@oclif/core";
 import { ConfigManager, loadEnvironment, LRCLogger } from "lrclient";
+import BaseCommand from "../BaseCommand";
 
-export default class SetEnvironment extends Command {
+export default class SetEnvironment extends BaseCommand {
   static description = "Updates the current working environment";
 
   static examples = [
@@ -31,22 +30,20 @@ Updated config ⚙️
     },
   ];
 
-  static logger = new LRCLogger();
-  static configManager = new ConfigManager();
 
   async run(): Promise<void> {
     const { args, flags } = await this.parse(SetEnvironment);
 
-    // console.debug("Loading config...")
-    const config = await SetEnvironment.configManager.loadConfig();
-    // console.debug("Loaded config.")
+    const logger = new LRCLogger(this.getLoggerConfig(flags));
+    const configManager = this.getConfigManager(flags);
+
+    const config = await configManager.loadConfig();
     config.selectedEnvironment = args.environment;
-    // console.debug("Storing config...")
-    await SetEnvironment.configManager.storeConfig(config);
+    await configManager.storeConfig(config);
 
     if (config.selectedEnvironment) {
       const env = await loadEnvironment(config.selectedEnvironment);
-      SetEnvironment.logger.logEnvironment(config.selectedEnvironment, env);
+      logger.logEnvironment(config.selectedEnvironment, env);
     }
 
     this.log("Updated config ⚙️");
